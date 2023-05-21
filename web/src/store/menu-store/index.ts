@@ -18,6 +18,8 @@ export const useMenuStore = defineStore('useMenuStore', () => {
 
   const router = useRouter();
 
+  const refreshed = ref(false);
+
   /**
    * 默认有一个首页，并且不能关闭
    */
@@ -108,5 +110,6 @@ export const useMenuStore = defineStore('useMenuStore', () => {
     selectedMenu,
     allMenu,
     removeSelected,
+    refreshed,
   };
 });

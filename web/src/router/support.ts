@@ -18,6 +18,4 @@ export function setToken(token: string) {
   localStorage.token = token;
 }
 
-
-export async function checkAuth() {
-}
+export async function checkAuth() {}

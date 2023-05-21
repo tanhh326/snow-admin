@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { jumpToIndex, setToken } from 'src/router/support';
 import { ElLoading } from 'element-plus';
@@ -6,7 +6,7 @@ import { useMenuStore } from 'src/store';
 
 const form = reactive({
   username: 'admin',
-  password: '123456'
+  password: '123456',
 });
 
 function login() {
@@ -21,14 +21,14 @@ function login() {
   <div>
     <h3>Sign In</h3>
     <el-form>
-      <el-form-item label='用户名/手机号'>
-        <el-input v-model='form.username' />
+      <el-form-item label="用户名/手机号">
+        <el-input v-model="form.username" />
       </el-form-item>
-      <el-form-item label='密码'>
-        <el-input v-model='form.password' />
+      <el-form-item label="密码">
+        <el-input v-model="form.password" />
       </el-form-item>
       <el-form-item>
-        <el-button @click='login'>登 录</el-button>
+        <el-button @click="login">登 录</el-button>
       </el-form-item>
     </el-form>
   </div>

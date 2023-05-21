@@ -1,9 +1,9 @@
-<script lang='tsx' setup>
+<script lang="tsx" setup>
 import {
   ArrowLeftBold,
   ArrowRightBold,
   HomeFilled,
-  Location
+  Location,
 } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { useMenuStore } from 'src/store';
@@ -19,22 +19,22 @@ const { activated, allMenu } = storeToRefs(useMenuStore());
 </script>
 
 <template>
-  <div class='t-aside-top'>
-    <h3 v-if='!isCollapse'>Admin</h3>
+  <div class="t-aside-top">
+    <h3 v-if="!isCollapse">Admin</h3>
     <h3 v-else>@</h3>
   </div>
   <el-menu
-    :collapse='isCollapse'
-    :default-active='activated.last'
-    :default-openeds='activated.full'
-    class='t-aside-middle'
+    :collapse="isCollapse"
+    :default-active="activated.last"
+    :default-openeds="activated.full"
+    class="t-aside-middle"
     router
     unique-opened
   >
-    <template v-for='menu of allMenu'>
+    <template v-for="menu of allMenu">
       <el-sub-menu
-        v-if='menu.children && menu.children.length'
-        :index='String(menu.id)'
+        v-if="menu.children && menu.children.length"
+        :index="String(menu.id)"
       >
         <template #title>
           <el-icon>
@@ -43,14 +43,14 @@ const { activated, allMenu } = storeToRefs(useMenuStore());
           <span>{{ menu.name }}</span>
         </template>
         <el-menu-item
-          v-for='item of menu.children'
-          :index='String(item.id)'
-          :route='item.path'
+          v-for="item of menu.children"
+          :index="String(item.id)"
+          :route="item.path"
         >
           {{ item.name }}
         </el-menu-item>
       </el-sub-menu>
-      <el-menu-item v-else :index='String(menu.id)' :route='menu.path'>
+      <el-menu-item v-else :index="String(menu.id)" :route="menu.path">
         <el-icon>
           <HomeFilled />
         </el-icon>
@@ -58,15 +58,15 @@ const { activated, allMenu } = storeToRefs(useMenuStore());
       </el-menu-item>
     </template>
   </el-menu>
-  <div class='t-aside-bottom' @click='toggleCollapse'>
+  <div class="t-aside-bottom" @click="toggleCollapse">
     <el-icon>
-      <ArrowRightBold v-if='isCollapse' />
+      <ArrowRightBold v-if="isCollapse" />
       <ArrowLeftBold v-else />
     </el-icon>
   </div>
 </template>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .el-menu {
   border: 0;
 }
