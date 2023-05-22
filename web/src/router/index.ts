@@ -1,15 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { getToken, jumpToLogin } from 'src/router/support';
-import {
-  indexRoute,
-  loginRoute,
-  notfoundRoute,
-} from 'src/router/static-router';
+import { jumpToLogin } from 'src/router/support';
+import { indexRoute, loginRoute, notfoundRoute } from 'src/router/static-router';
 import { useMenuStore } from 'src/store';
-import {
-  dynamicRouteParentName,
-  fetchDynamicRouter,
-} from 'src/router/dynamic-router';
+import { dynamicRouteParentName, fetchDynamicRouter } from 'src/router/dynamic-router';
+import { usePermissionsStore } from 'src/store/permissions-store';
 
 // 这里第一个route全部要改成动态的
 const router = createRouter({
@@ -20,15 +14,15 @@ const router = createRouter({
       name: dynamicRouteParentName,
       redirect: '/index',
       component: () => import('src/layout/main-layout/Index.vue'),
-      children: [],
+      children: []
     },
     loginRoute,
-    notfoundRoute,
-  ],
+    notfoundRoute
+  ]
 });
 
 router.beforeEach((to, from, next) => {
-  const token = getToken();
+  const token = usePermissionsStore().token;
   if (to.path === loginRoute.path) {
     // 必须通过退出登录回到登录页
     token ? next({ path: indexRoute.path }) : next();

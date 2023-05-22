@@ -3,17 +3,18 @@ import { RouteRecordRaw } from 'vue-router';
 import router from 'src/router/index';
 import { indexRoute } from 'src/router/static-router';
 import { ElLoading } from 'element-plus';
+import { SystemMenu } from 'src/store/menu-store/type';
 
 const allPages = import.meta.glob('src/pages/**/Index.vue');
 
-const mockMenu = [
+const mockMenu: SystemMenu[] = [
   {
     id: 1,
     name: '驾驶舱',
     icon: 'dashboard',
     show: true,
     path: '/index',
-    component: 'src/pages/dashboard/Index.vue',
+    component: 'src/pages/dashboard/Index.vue'
   },
   {
     id: 2,
@@ -26,21 +27,23 @@ const mockMenu = [
         id: 21,
         name: '用户列表',
         icon: 'list',
+        parentId: 2,
         show: true,
         path: '/admin',
         component: 'src/pages/system/menu/Index.vue',
-        children: [],
+        children: []
       },
       {
         id: 22,
         name: '部门管理',
         icon: 'plus',
+        parentId: 2,
         show: true,
         path: '/user',
         component: 'src/pages/system/menu/Index.vue',
-        children: [],
-      },
-    ],
+        children: []
+      }
+    ]
   },
   {
     id: 3,
@@ -53,40 +56,42 @@ const mockMenu = [
         id: 31,
         name: '系统设置',
         icon: 'list',
+        parentId: 3,
         show: true,
         path: '/system-set',
         component: 'src/pages/system/menu/Index.vue',
-        children: [],
+        children: []
       },
       {
         id: 32,
         name: '日志管理',
         icon: 'list',
+        parentId: 3,
         show: true,
         path: '/system-log',
         component: 'src/pages/system/menu/Index.vue',
-        children: [],
-      },
-    ],
-  },
+        children: []
+      }
+    ]
+  }
 ];
 
 export const dynamicRouteParentName = 'DynamicRouter';
 
 export function createRouterRaw({
-  path,
-  name,
-  component,
-}: menuStoreType.SystemMenu): RouteRecordRaw {
+                                  path,
+                                  name,
+                                  component
+                                }: menuStoreType.SystemMenu): RouteRecordRaw {
   if (!component) {
     throw new Error('创建路由必须指定组件');
   }
   return {
     path,
     meta: {
-      title: name,
+      title: name
     },
-    component: allPages['/' + component],
+    component: allPages['/' + component]
   };
 }
 
@@ -117,7 +122,7 @@ export function fetchDynamicRouter(): Promise<void> {
 
   const fullScreenLoading = ElLoading.service({
     lock: true,
-    text: '加载中...',
+    text: '加载中...'
   });
   useMenuStore().allMenu = mockMenu;
   const routes = collectLastLevelNodes(mockMenu);

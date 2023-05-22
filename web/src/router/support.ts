@@ -1,9 +1,10 @@
 import router from 'src/router/index';
 import { indexRoute, loginRoute } from 'src/router/static-router';
 
-export function jumpToLogin(before?: () => void) {
-  before && before();
-  router.push(loginRoute.path).then();
+export function jumpToLogin(after?: () => void) {
+  router.push(loginRoute.path).then(() => {
+    after?.();
+  });
 }
 
 export function jumpToIndex() {
@@ -18,4 +19,5 @@ export function setToken(token: string) {
   localStorage.token = token;
 }
 
-export async function checkAuth() {}
+export async function checkAuth() {
+}

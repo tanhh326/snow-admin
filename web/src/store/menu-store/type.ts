@@ -49,6 +49,10 @@ export interface SystemMenu {
    */
   component?: string;
   /**
+   * 父级id
+   */
+  parentId?: number;
+  /**
    * 子菜单
    */
   children?: SystemMenu[];
