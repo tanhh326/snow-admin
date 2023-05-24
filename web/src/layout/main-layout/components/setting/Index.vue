@@ -6,6 +6,9 @@ import { ElMessage } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { debounce } from 'src/util';
 import { useMenuStore } from 'src/store';
+import { findMenuByName } from 'src/store/menu-store/util';
+import { SystemMenu } from 'src/store/menu-store/type';
+import SearchDialog from 'src/layout/main-layout/components/search-dialog/Index.vue';
 
 const permissionsStore = usePermissionsStore();
 
@@ -13,11 +16,14 @@ const menuStore = useMenuStore();
 
 const userinfoDialogVisible = ref(false);
 
+const searchResult = ref<SystemMenu[][]>([]);
+
 // TODO
 const searchOption = reactive({
   visible: false,
   onInput: debounce(({ target }: InputEvent & { target: HTMLInputElement }) => {
     console.log(target.value);
+    findMenuByName(menuStore.allMenu, '管理');
   }, 1000)
 });
 
@@ -46,8 +52,8 @@ function handleLogout() {
       <el-icon :size='24' @click='searchOption.visible = !searchOption.visible'>
         <search />
       </el-icon>
-      <input v-if='searchOption.visible' class='t-search-input' placeholder='搜索菜单'
-             @input='searchOption.onInput' />
+      <!--      <input v-if='searchOption.visible' class='t-search-input' placeholder='搜索菜单'-->
+      <!--             @input='searchOption.onInput' />-->
     </div>
     <div class='t-item'>
       i18n
@@ -69,6 +75,7 @@ function handleLogout() {
       </el-dropdown>
     </div>
   </div>
+  <SearchDialog v-model:visible='searchOption.visible' />
   <el-dialog
     v-model='userinfoDialogVisible'
     title='个人资料'

@@ -25,3 +25,22 @@ export function findChildAndParents(
   }
   return result;
 }
+
+/**
+ * 通过名称模糊匹配最后一级菜单及父菜单
+ * @param menus 所有菜单
+ * @param name 名字
+ * @param parent 递归的父节点
+ * @param result 二维数组
+ */
+export function findMenuByName(menus: SystemMenu[], name: string, parent: SystemMenu[] = [], result: SystemMenu[][] = []) {
+  for (const menu of menus) {
+    const currentPath = [...parent, menu];
+    if (menu.children && menu.children.length > 0) {
+      findMenuByName(menu.children, name, currentPath, result);
+    } else if (menu.name.includes(name)) {
+      result.push(currentPath);
+    }
+  }
+  return result;
+}

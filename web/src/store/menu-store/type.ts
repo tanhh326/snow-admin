@@ -49,6 +49,10 @@ export interface SystemMenu {
    */
   component?: string;
   /**
+   * 菜单类型
+   */
+  menuType?: MenuType;
+  /**
    * 父级id
    */
   parentId?: number;
@@ -78,3 +82,9 @@ export interface Activated {
  * {@see SystemMenuTab}移除方式
  */
 export type RemoveMode = 'left' | 'right' | 'current' | 'all';
+
+
+/**
+ * 菜单类型
+ */
+export type MenuType = 'directory' | 'menu' | 'button';
