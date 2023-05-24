@@ -5,6 +5,7 @@ import { indexRoute } from 'src/router/static-router';
 import { ElLoading } from 'element-plus';
 import { SystemMenu } from 'src/store/menu-store/type';
 
+// 获取所有路由页面组件
 const allPages = import.meta.glob('src/pages/**/Index.vue');
 
 const mockMenu: SystemMenu[] = [
@@ -14,6 +15,7 @@ const mockMenu: SystemMenu[] = [
     icon: 'dashboard',
     show: true,
     path: '/index',
+    menuType: 'menu',
     component: 'src/pages/dashboard/Index.vue'
   },
   {
@@ -21,17 +23,42 @@ const mockMenu: SystemMenu[] = [
     name: '用户管理',
     icon: 'users',
     show: true,
+    menuType: 'directory',
     path: '/users',
     children: [
       {
         id: 21,
-        name: '用户列表',
+        name: '用户类别',
         icon: 'list',
         parentId: 2,
         show: true,
         path: '/admin',
+        menuType: 'directory',
         component: 'src/pages/system/menu/Index.vue',
-        children: []
+        children: [
+          {
+            id: 211,
+            name: '内部用户',
+            icon: 'list',
+            parentId: 2,
+            show: true,
+            path: '/admin/inner',
+            menuType: 'menu',
+            component: 'src/pages/system/menu/Index.vue',
+            children: []
+          },
+          {
+            id: 212,
+            name: '外部用户',
+            icon: 'list',
+            parentId: 2,
+            show: true,
+            path: '/admin/out',
+            menuType: 'menu',
+            component: 'src/pages/system/menu/Index.vue',
+            children: []
+          }
+        ]
       },
       {
         id: 22,
@@ -39,6 +66,7 @@ const mockMenu: SystemMenu[] = [
         icon: 'plus',
         parentId: 2,
         show: true,
+        menuType: 'menu',
         path: '/user',
         component: 'src/pages/system/menu/Index.vue',
         children: []
@@ -51,6 +79,7 @@ const mockMenu: SystemMenu[] = [
     icon: 'settings',
     show: true,
     path: '/settings',
+    menuType: 'directory',
     children: [
       {
         id: 31,
@@ -58,6 +87,7 @@ const mockMenu: SystemMenu[] = [
         icon: 'list',
         parentId: 3,
         show: true,
+        menuType: 'menu',
         path: '/system-set',
         component: 'src/pages/system/menu/Index.vue',
         children: []
@@ -68,6 +98,7 @@ const mockMenu: SystemMenu[] = [
         icon: 'list',
         parentId: 3,
         show: true,
+        menuType: 'menu',
         path: '/system-log',
         component: 'src/pages/system/menu/Index.vue',
         children: []
@@ -78,11 +109,11 @@ const mockMenu: SystemMenu[] = [
 
 export const dynamicRouteParentName = 'DynamicRouter';
 
-export function createRouterRaw({
-                                  path,
-                                  name,
-                                  component
-                                }: menuStoreType.SystemMenu): RouteRecordRaw {
+function createRouterRaw({
+                           path,
+                           name,
+                           component
+                         }: menuStoreType.SystemMenu): RouteRecordRaw {
   if (!component) {
     throw new Error('创建路由必须指定组件');
   }
@@ -95,7 +126,7 @@ export function createRouterRaw({
   };
 }
 
-export function collectLastLevelNodes(allMenuTree: menuStoreType.SystemMenu[]) {
+function collectLastLevelNodes(allMenuTree: menuStoreType.SystemMenu[]) {
   const result: RouteRecordRaw[] = [];
 
   function traverse(menuTree: menuStoreType.SystemMenu[]) {
@@ -113,7 +144,7 @@ export function collectLastLevelNodes(allMenuTree: menuStoreType.SystemMenu[]) {
 }
 
 /**
- * 获取动态路由
+ * 获取动态路由(只解析最后一级菜单)
  */
 export function fetchDynamicRouter(): Promise<void> {
   if (!indexRoute.name) {

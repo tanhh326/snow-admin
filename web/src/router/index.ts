@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
       return;
     }
     next();
+    menuStore.changeActivated(to.path);
   }
 });
 

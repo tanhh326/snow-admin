@@ -1,7 +1,8 @@
 <script lang='tsx' setup>
-import { ArrowLeftBold, ArrowRightBold, HomeFilled, Location } from '@element-plus/icons-vue';
+import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { useMenuStore } from 'src/store';
+import RecursionMenu from './RecursionMenu';
 import { storeToRefs } from 'pinia';
 
 const isCollapse = ref(false);
@@ -11,7 +12,6 @@ function toggleCollapse() {
 }
 
 const { activated, allMenu } = storeToRefs(useMenuStore());
-
 </script>
 
 <template>
@@ -27,32 +27,7 @@ const { activated, allMenu } = storeToRefs(useMenuStore());
     router
     unique-opened
   >
-    <template v-for='menu of allMenu'>
-      <el-sub-menu
-        v-if='menu.children && menu.children.length'
-        :index='String(menu.id)'
-      >
-        <template #title>
-          <el-icon>
-            <Location />
-          </el-icon>
-          <span>{{ menu.name }}</span>
-        </template>
-        <el-menu-item
-          v-for='item of menu.children'
-          :index='String(item.id)'
-          :route='item.path'
-        >
-          {{ item.name }}
-        </el-menu-item>
-      </el-sub-menu>
-      <el-menu-item v-else :index='String(menu.id)' :route='menu.path'>
-        <el-icon>
-          <HomeFilled />
-        </el-icon>
-        <span>{{ menu.name }}</span>
-      </el-menu-item>
-    </template>
+    <RecursionMenu :menus='allMenu' />
   </el-menu>
   <div class='t-aside-bottom' @click='toggleCollapse'>
     <el-icon>

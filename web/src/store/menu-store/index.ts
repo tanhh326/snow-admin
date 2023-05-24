@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { Activated, RemoveMode, SystemMenu, SystemMenuTab } from './type';
+import { ref } from 'vue';
+import { RemoveMode, SystemMenu, SystemMenuTab } from './type';
 import { indexRoute } from 'src/router/static-router';
 import { findChildAndParents } from 'src/store/menu-store/util';
 
@@ -14,10 +13,9 @@ const { path, meta } = indexRoute;
  * 菜单以及路由的存储器
  */
 export const useMenuStore = defineStore('useMenuStore', () => {
-  const route = useRoute();
-
-  const router = useRouter();
-
+  /**
+   * 是否已刷新路由，这里不用{@see allMenu}等于空判断，因为可能会有用户一个动态路由都没有的情况
+   */
   const refreshed = ref(false);
 
   /**
@@ -39,22 +37,26 @@ export const useMenuStore = defineStore('useMenuStore', () => {
 
   /**
    * 当前选中的菜单，以及父菜单ids
-   * 切换{@see SystemMenuTab}选中、通过输入地址跳转、点击菜单时刷新
    */
-  const activated = computed<Activated>(() => {
-    const fullItem = findChildAndParents(route.path, allMenu.value);
+  const activated = ref();
+
+  /**
+   * 每次路由跳转后修改当前选中（切换{@see SystemMenuTab}选中、通过输入地址跳转、点击菜单时）
+   */
+  function changeActivated(path: string) {
+    const fullItem = findChildAndParents(path, allMenu.value);
     const lastItem = fullItem[fullItem.length - 1];
     lastItem && addSelected(lastItem);
     const full = fullItem.map((it) => String(it.id));
-    return { full, last: full[full.length - 1] };
-  });
+    activated.value = { full, last: full[full.length - 1] };
+  }
 
   /**
    * 关闭menuTab
    * @param index 当前执行操作的{@see SystemMenuTab}索引
    * @param removeMode 关闭方式
    */
-  function removeSelected(index: number, removeMode: RemoveMode) {
+  function removeSelected(index: number, removeMode: RemoveMode): string {
     let currentActivated: SystemMenuTab = selectedMenu.value[index];
     let deleteOption: { start: number; deleteCount?: number };
     switch (removeMode) {
@@ -78,11 +80,10 @@ export const useMenuStore = defineStore('useMenuStore', () => {
         currentActivated = selectedMenu.value[0];
         deleteOption = { start: 1, deleteCount: selectedMenu.value.length };
     }
-    router.push(currentActivated.path).then(() => {
-      currentActivated.activated = true;
-      const { start, deleteCount } = deleteOption;
-      selectedMenu.value.splice(start, deleteCount);
-    });
+    currentActivated.activated = true;
+    const { start, deleteCount } = deleteOption;
+    selectedMenu.value.splice(start, deleteCount);
+    return currentActivated.path;
   }
 
   /**
@@ -109,7 +110,8 @@ export const useMenuStore = defineStore('useMenuStore', () => {
     activated,
     selectedMenu,
     allMenu,
+    refreshed,
     removeSelected,
-    refreshed
+    changeActivated
   };
 });

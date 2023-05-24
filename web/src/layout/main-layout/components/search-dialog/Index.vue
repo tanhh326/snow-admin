@@ -21,6 +21,8 @@ defineProps({
 const emits = defineEmits(['update:visible']);
 
 function handleClose() {
+  searchText.value = '';
+  searchResult.value = [];
   emits('update:visible', false);
 }
 

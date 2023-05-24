@@ -36,7 +36,7 @@ export function findChildAndParents(
 export function findMenuByName(menus: SystemMenu[], name: string, parent: SystemMenu[] = [], result: SystemMenu[][] = []) {
   for (const menu of menus) {
     const currentPath = [...parent, menu];
-    if (menu.children && menu.children.length > 0) {
+    if (menu.children && menu.children.length) {
       findMenuByName(menu.children, name, currentPath, result);
     } else if (menu.name.includes(name)) {
       result.push(currentPath);
