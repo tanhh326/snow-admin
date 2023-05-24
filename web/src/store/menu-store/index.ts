@@ -26,8 +26,8 @@ export const useMenuStore = defineStore('useMenuStore', () => {
       path: path,
       name: meta?.title as string,
       closeable: false,
-      activated: true
-    }
+      activated: true,
+    },
   ]);
 
   /**
@@ -73,7 +73,7 @@ export const useMenuStore = defineStore('useMenuStore', () => {
       case 'right':
         deleteOption = {
           start: index + 1,
-          deleteCount: selectedMenu.value.length
+          deleteCount: selectedMenu.value.length,
         };
         break;
       case 'all':
@@ -112,6 +112,6 @@ export const useMenuStore = defineStore('useMenuStore', () => {
     allMenu,
     refreshed,
     removeSelected,
-    changeActivated
+    changeActivated,
   };
 });

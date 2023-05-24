@@ -1,4 +1,4 @@
-<script lang='tsx' setup>
+<script lang="tsx" setup>
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { useMenuStore } from 'src/store';
@@ -15,29 +15,29 @@ const { activated, allMenu } = storeToRefs(useMenuStore());
 </script>
 
 <template>
-  <div class='t-aside-top'>
-    <h3 v-if='!isCollapse'>Admin</h3>
+  <div class="t-aside-top">
+    <h3 v-if="!isCollapse">Admin</h3>
     <h3 v-else>@</h3>
   </div>
   <el-menu
-    :collapse='isCollapse'
-    :default-active='activated.last'
-    :default-openeds='activated.full'
-    class='t-aside-middle'
+    :collapse="isCollapse"
+    :default-active="activated.last"
+    :default-openeds="activated.full"
+    class="t-aside-middle"
     router
     unique-opened
   >
-    <RecursionMenu :menus='allMenu' />
+    <RecursionMenu :menus="allMenu" />
   </el-menu>
-  <div class='t-aside-bottom' @click='toggleCollapse'>
+  <div class="t-aside-bottom" @click="toggleCollapse">
     <el-icon>
-      <ArrowRightBold v-if='isCollapse' />
+      <ArrowRightBold v-if="isCollapse" />
       <ArrowLeftBold v-else />
     </el-icon>
   </div>
 </template>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .el-menu {
   border: 0;
 }

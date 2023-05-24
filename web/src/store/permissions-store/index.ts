@@ -3,7 +3,9 @@ import { ref } from 'vue';
 
 const persistKey = 'user-info';
 
-export const usePermissionsStore = defineStore('usePermissionsStore', () => {
+export const usePermissionsStore = defineStore(
+  'usePermissionsStore',
+  () => {
     const token = ref<String>('');
 
     function reset() {
@@ -13,12 +15,12 @@ export const usePermissionsStore = defineStore('usePermissionsStore', () => {
 
     return {
       token,
-      reset
+      reset,
     };
   },
   {
     persist: {
-      key: persistKey
-    }
-  }
+      key: persistKey,
+    },
+  },
 );

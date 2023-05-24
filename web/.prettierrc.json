@@ -3,5 +3,8 @@
   "singleQuote": true,
   "quoteProps": "as-needed",
   "bracketSpacing": true,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "jsxBracketSameLine": true
 }

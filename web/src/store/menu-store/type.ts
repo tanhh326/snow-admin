@@ -83,7 +83,6 @@ export interface Activated {
  */
 export type RemoveMode = 'left' | 'right' | 'current' | 'all';
 
-
 /**
  * 菜单类型
  */

@@ -16,7 +16,7 @@ const mockMenu: SystemMenu[] = [
     show: true,
     path: '/index',
     menuType: 'menu',
-    component: 'src/pages/dashboard/Index.vue'
+    component: 'src/pages/dashboard/Index.vue',
   },
   {
     id: 2,
@@ -45,7 +45,7 @@ const mockMenu: SystemMenu[] = [
             path: '/admin/inner',
             menuType: 'menu',
             component: 'src/pages/system/menu/Index.vue',
-            children: []
+            children: [],
           },
           {
             id: 212,
@@ -56,9 +56,9 @@ const mockMenu: SystemMenu[] = [
             path: '/admin/out',
             menuType: 'menu',
             component: 'src/pages/system/menu/Index.vue',
-            children: []
-          }
-        ]
+            children: [],
+          },
+        ],
       },
       {
         id: 22,
@@ -69,9 +69,9 @@ const mockMenu: SystemMenu[] = [
         menuType: 'menu',
         path: '/user',
         component: 'src/pages/system/menu/Index.vue',
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: 3,
@@ -90,7 +90,7 @@ const mockMenu: SystemMenu[] = [
         menuType: 'menu',
         path: '/system-set',
         component: 'src/pages/system/menu/Index.vue',
-        children: []
+        children: [],
       },
       {
         id: 32,
@@ -101,28 +101,28 @@ const mockMenu: SystemMenu[] = [
         menuType: 'menu',
         path: '/system-log',
         component: 'src/pages/system/menu/Index.vue',
-        children: []
-      }
-    ]
-  }
+        children: [],
+      },
+    ],
+  },
 ];
 
 export const dynamicRouteParentName = 'DynamicRouter';
 
 function createRouterRaw({
-                           path,
-                           name,
-                           component
-                         }: menuStoreType.SystemMenu): RouteRecordRaw {
+  path,
+  name,
+  component,
+}: menuStoreType.SystemMenu): RouteRecordRaw {
   if (!component) {
     throw new Error('创建路由必须指定组件');
   }
   return {
     path,
     meta: {
-      title: name
+      title: name,
     },
-    component: allPages['/' + component]
+    component: allPages['/' + component],
   };
 }
 
@@ -153,7 +153,7 @@ export function fetchDynamicRouter(): Promise<void> {
 
   const fullScreenLoading = ElLoading.service({
     lock: true,
-    text: '加载中...'
+    text: '加载中...',
   });
   useMenuStore().allMenu = mockMenu;
   const routes = collectLastLevelNodes(mockMenu);

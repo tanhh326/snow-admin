@@ -11,25 +11,25 @@ export default defineConfig({
     vueJsxPlugin(),
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
     }),
     Components({
-      resolvers: [ElementPlusResolver()]
-    })
+      resolvers: [ElementPlusResolver()],
+    }),
   ],
   css: {
     preprocessorOptions: {
       less: {
-        javascriptEnabled: true
-      }
-    }
+        javascriptEnabled: true,
+      },
+    },
   },
   resolve: {
     alias: [
       {
         find: 'src',
-        replacement: resolve(__dirname, 'src')
-      }
-    ]
-  }
+        replacement: resolve(__dirname, 'src'),
+      },
+    ],
+  },
 });

@@ -1,5 +1,4 @@
-<script lang='ts' setup>
-
+<script lang="ts" setup>
 import { debounce } from 'src/util';
 import { findMenuByName } from 'src/store/menu-store/util';
 import { useMenuStore } from 'src/store';
@@ -12,11 +11,10 @@ const menuStore = useMenuStore();
 const router = useRouter();
 
 defineProps({
-    visible: {
-      type: Boolean
-    }
-  }
-);
+  visible: {
+    type: Boolean,
+  },
+});
 
 const emits = defineEmits(['update:visible']);
 
@@ -40,35 +38,38 @@ const handleInput = debounce((value: string) => {
     searchResult.value = findMenuByName(menuStore.allMenu, value);
   }
 }, 1000);
-
 </script>
 
 <template>
-  <div v-if='visible' class='t-container' @click.stop='handleClose'>
-    <div class='t-dialog' @click.stop>
-      <div class='t-top'>
-        <el-input v-model='searchText' clearable placeholder='搜索菜单' prefix-icon='search' size='large'
-                  @input='handleInput' />
+  <div v-if="visible" class="t-container" @click.stop="handleClose">
+    <div class="t-dialog" @click.stop>
+      <div class="t-top">
+        <el-input
+          v-model="searchText"
+          clearable
+          placeholder="搜索菜单"
+          prefix-icon="search"
+          size="large"
+          @input="handleInput"
+        />
       </div>
-      <div v-if='searchResult && searchResult.length' class='t-result'>
-        <div v-for='sr in searchResult' class='t-path' @click='resultClick(sr)'>
-          {{ sr.map(it => it.name).join(' &gt; ') }}
+      <div v-if="searchResult && searchResult.length" class="t-result">
+        <div v-for="sr in searchResult" class="t-path" @click="resultClick(sr)">
+          {{ sr.map((it) => it.name).join(' &gt; ') }}
         </div>
       </div>
-      <div v-else class='t-result'>暂无搜索结果</div>
-      <div class='t-tooltip'>
-        工具栏
-      </div>
+      <div v-else class="t-result">暂无搜索结果</div>
+      <div class="t-tooltip">工具栏</div>
     </div>
   </div>
 </template>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .t-container {
   position: fixed;
 
   &::before {
-    content: "";
+    content: '';
     position: fixed;
     top: 0;
     left: 0;

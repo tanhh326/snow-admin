@@ -5,7 +5,7 @@
  */
 export function debounce(func: Function, delay: number) {
   let timer: number;
-  return function(...args: any[]) {
+  return function (...args: any[]) {
     if (timer) {
       clearTimeout(timer);
     }

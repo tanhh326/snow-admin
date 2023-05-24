@@ -1,8 +1,15 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { jumpToLogin } from 'src/router/support';
-import { indexRoute, loginRoute, notfoundRoute } from 'src/router/static-router';
+import {
+  indexRoute,
+  loginRoute,
+  notfoundRoute,
+} from 'src/router/static-router';
 import { useMenuStore } from 'src/store';
-import { dynamicRouteParentName, fetchDynamicRouter } from 'src/router/dynamic-router';
+import {
+  dynamicRouteParentName,
+  fetchDynamicRouter,
+} from 'src/router/dynamic-router';
 import { usePermissionsStore } from 'src/store/permissions-store';
 
 // 这里第一个route全部要改成动态的
@@ -14,11 +21,11 @@ const router = createRouter({
       name: dynamicRouteParentName,
       redirect: '/index',
       component: () => import('src/layout/main-layout/Index.vue'),
-      children: []
+      children: [],
     },
     loginRoute,
-    notfoundRoute
-  ]
+    notfoundRoute,
+  ],
 });
 
 router.beforeEach((to, from, next) => {

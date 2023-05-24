@@ -1,4 +1,4 @@
-<script lang='ts' setup>
+<script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { menuStoreType, useMenuStore } from 'src/store';
 import { Close } from '@element-plus/icons-vue';
@@ -13,7 +13,7 @@ const router = useRouter();
 const contextmenuConfig = reactive({
   visible: false,
   x: 0,
-  y: 0
+  y: 0,
 });
 
 function handleCurrentClose(index: number) {
@@ -22,7 +22,10 @@ function handleCurrentClose(index: number) {
 }
 
 function contextmenuClick(closeMode: menuStoreType.RemoveMode) {
-  const path = menuStore.removeSelected(currentRightClickIndex.value, closeMode);
+  const path = menuStore.removeSelected(
+    currentRightClickIndex.value,
+    closeMode,
+  );
   router.push(path);
   contextmenuConfig.visible = false;
 }
@@ -46,20 +49,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class='t-nav-tab'>
-    <template v-for='(tab, index) in menuStore.selectedMenu'>
+  <div class="t-nav-tab">
+    <template v-for="(tab, index) in menuStore.selectedMenu">
       <div
         :class="['t-tab-item', tab.activated && 't-tab-item_activated']"
-        @click='tabItemClick(tab)'
-        @contextmenu.prevent='tab.closeable && showContextmenu($event, index)'
+        @click="tabItemClick(tab)"
+        @contextmenu.prevent="tab.closeable && showContextmenu($event, index)"
       >
         {{ tab.name }}
         <div
-          v-show='tab.closeable'
-          class='close'
-          @click.stop='handleCurrentClose(index)'
+          v-show="tab.closeable"
+          class="close"
+          @click.stop="handleCurrentClose(index)"
         >
-          <el-icon :size='12'>
+          <el-icon :size="12">
             <Close />
           </el-icon>
         </div>
@@ -68,23 +71,23 @@ onMounted(() => {
   </div>
 
   <div
-    v-show='contextmenuConfig.visible'
+    v-show="contextmenuConfig.visible"
     :style="{
       top: contextmenuConfig.y + 'px',
       left: contextmenuConfig.x + 'px',
     }"
-    class='t-contextmenu'
-    @click.stop=''
+    class="t-contextmenu"
+    @click.stop=""
   >
-    <div class='triangle' />
-    <div class='option' @click="contextmenuClick('current')">关闭当前标签</div>
-    <div class='option' @click="contextmenuClick('left')">关闭左侧标签</div>
-    <div class='option' @click="contextmenuClick('right')">关闭右侧标签</div>
-    <div class='option' @click="contextmenuClick('all')">关闭全部标签</div>
+    <div class="triangle" />
+    <div class="option" @click="contextmenuClick('current')">关闭当前标签</div>
+    <div class="option" @click="contextmenuClick('left')">关闭左侧标签</div>
+    <div class="option" @click="contextmenuClick('right')">关闭右侧标签</div>
+    <div class="option" @click="contextmenuClick('all')">关闭全部标签</div>
   </div>
 </template>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .t-nav-tab {
   display: flex;
   overflow-x: auto;

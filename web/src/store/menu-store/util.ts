@@ -9,7 +9,7 @@ import { SystemMenu } from 'src/store/menu-store/type';
 export function findChildAndParents(
   path: string,
   menus: SystemMenu[],
-  result: SystemMenu[] = []
+  result: SystemMenu[] = [],
 ): SystemMenu[] {
   for (const item of menus) {
     if (item.path === path) {
@@ -33,7 +33,12 @@ export function findChildAndParents(
  * @param parent 递归的父节点
  * @param result 二维数组
  */
-export function findMenuByName(menus: SystemMenu[], name: string, parent: SystemMenu[] = [], result: SystemMenu[][] = []) {
+export function findMenuByName(
+  menus: SystemMenu[],
+  name: string,
+  parent: SystemMenu[] = [],
+  result: SystemMenu[][] = [],
+) {
   for (const menu of menus) {
     const currentPath = [...parent, menu];
     if (menu.children && menu.children.length) {
