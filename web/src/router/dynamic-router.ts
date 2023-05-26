@@ -40,6 +40,15 @@ const mockMenu = [
         component: 'src/pages/system/menu/Index.vue',
         children: [],
       },
+      {
+        id: 23,
+        name: '树形列表管理',
+        icon: 'plus',
+        show: true,
+        path: '/tree-list',
+        component: 'src/pages/tree-list/Index.vue',
+        children: [],
+      },
     ],
   },
   {

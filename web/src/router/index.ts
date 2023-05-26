@@ -3,7 +3,7 @@ import { getToken, jumpToLogin } from 'src/router/support';
 import {
   indexRoute,
   loginRoute,
-  notfoundRoute,
+  notfoundRoute
 } from 'src/router/static-router';
 import { useMenuStore } from 'src/store';
 import {
