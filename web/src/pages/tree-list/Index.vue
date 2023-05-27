@@ -13,7 +13,7 @@
           }"
             @click="clickNode(node)"
         >
-          <div style="cursor: default; flex: 1">
+          <div style="cursor: pointer; flex: 1;">
             {{ node.title }}
           </div>
           <div
@@ -39,12 +39,39 @@ const treeData = [
       {
         id: "page1-1",
         title: "Page1",
-        path: "/page1"
+        path: "/page1",
+        children: [
+          {
+            id: "page1-1-1",
+            title: "Page1-1",
+            path: "/page1-1",
+            children: [
+
+            ]
+          },
+          {
+            id: "page1-1-2",
+            title: "Page1-2",
+            path: "/page1-2"
+          }
+        ]
       },
       {
         id: "page1-2",
         title: "Page2",
-        path: "/page2"
+        path: "/page2",
+        children: [
+          {
+            id: "page2-1-1",
+            title: "Page2-1",
+            path: "/page2-1",
+          },
+          {
+            id: "page2-1-2",
+            title: "Page2-2",
+            path: "/page2-2"
+          }
+        ]
       }
     ]
   }
@@ -59,10 +86,13 @@ export default {
   }),
   methods: {
     clickNode(node) {
+      console.log(node)
       if (node.children && node.children.length) {
         node._closed = !node._closed;
       } else {
         this.activePath = node.path;
+        console.log("=========================")
+        console.log(this.activePath)
         // this.$router.push(node.path);
       }
     },
