@@ -1,58 +1,78 @@
 <script lang="ts" setup></script>
 
-
+<!-- 调用 -->
 <template>
   <div>
-    <div class="container">树形列表</div>
-    <input type="text" v-model="searchTerm" />
-    <button @click="search">Search</button>
-    <ul>
-      <li v-for="item in filteredData" :key="item.id">
-        {{ item.name }}
-        <tree-view v-if="item.children" :data="item.children"></tree-view>
-      </li>
-    </ul>
+    <i-tree :items="items" @filter="treeFilter">
+      <template #title="{ node }">
+        <div
+            :style="{
+            display: 'flex',
+            paddingLeft: `${node._depth * 20}px`,
+            color: node._selected ? 'blue' : 'black'
+          }"
+            @click="clickNode(node)"
+        >
+          <div style="cursor: default; flex: 1">
+            {{ node.title }}
+          </div>
+          <div
+              v-if="node.children && node.children.length"
+              style="flex: 0 0 20px; text-align: center; cursor: pointer"
+          >
+            {{ node._closed ? "+" : "-" }}
+          </div>
+        </div>
+      </template>
+    </i-tree>
   </div>
 </template>
 
 <script>
+import ITree from "src/pages/components/ITree.js";
+
+const treeData = [
+  {
+    id: "page",
+    title: "Page",
+    children: [
+      {
+        id: "page1-1",
+        title: "Page1",
+        path: "/page1"
+      },
+      {
+        id: "page1-2",
+        title: "Page2",
+        path: "/page2"
+      }
+    ]
+  }
+];
+
 export default {
   name: "SearchableTreeView",
-  props: {
-    data: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      searchTerm: "",
-    };
-  },
-  computed: {
-    filteredData() {
-      const filterNodes = (nodes) => {
-        return nodes.filter((node) => {
-          if (node.name.includes(this.searchTerm)) {
-            return true;
-          }
-          if (node.children) {
-            return filterNodes(node.children).length > 0;
-          }
-          return false;
-        });
-      };
-      return filterNodes(this.data);
-    },
-  },
+  components: { ITree },
+  data: () => ({
+    items: treeData,
+    activePath: ""
+  }),
   methods: {
-    search() {
-      // 获取搜索结果
-      const result = this.filteredData;
-      // 处理搜索结果
-      console.log(result);
-      // 清空搜索框
-      this.searchTerm = "";    },
+    clickNode(node) {
+      if (node.children && node.children.length) {
+        node._closed = !node._closed;
+      } else {
+        this.activePath = node.path;
+        // this.$router.push(node.path);
+      }
+    },
+    treeFilter(node) {
+      node._selected = node.path === this.activePath;
+    }
   },
+  created() {
+    this.activePath = this.$route.path;
+  }
 };
 </script>
+
