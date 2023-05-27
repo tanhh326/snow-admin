@@ -11,7 +11,7 @@ import {
   fetchDynamicRouter,
 } from 'src/router/dynamic-router';
 import { usePermissionsStore } from 'src/store/permissions-store';
-
+import Index from 'src/layout/main-layout/Index.vue';
 // 这里第一个route全部要改成动态的
 const router = createRouter({
   history: createWebHashHistory(),
@@ -20,7 +20,7 @@ const router = createRouter({
       path: '/',
       name: dynamicRouteParentName,
       redirect: '/index',
-      component: () => import('src/layout/main-layout/Index.vue'),
+      component: Index,
       children: [],
     },
     loginRoute,

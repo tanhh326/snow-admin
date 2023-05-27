@@ -67,6 +67,9 @@ export const useMenuStore = defineStore('useMenuStore', () => {
         deleteOption = { start: index, deleteCount: 1 };
         break;
       case 'left':
+        if (index === selectedMenu.value.length - 1) {
+          currentActivated = selectedMenu.value[0];
+        }
         const start = 1;
         deleteOption = { start, deleteCount: index == start ? 0 : index };
         break;
