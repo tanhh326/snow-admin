@@ -13,7 +13,9 @@ export default function <T>(
   const loading = ref(false);
 
   const execute = async () => {
+    loading.value = true;
     const result = await func();
+    loading.value = false;
     callback && callback(result);
   };
 
