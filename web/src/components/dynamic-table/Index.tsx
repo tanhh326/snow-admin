@@ -1,5 +1,5 @@
-import { computed, defineComponent } from 'vue';
-import { Action, DynamicTableColumn, Scope } from './type';
+import { computed, defineComponent, PropType, ref } from 'vue';
+import { Action, DynamicTableColumn, PageImpl, Scope } from './type';
 import {
   Bottom,
   Delete,
@@ -8,6 +8,7 @@ import {
   Refresh,
   Top,
 } from '@element-plus/icons-vue';
+import './style.less';
 import {
   ElButton,
   ElCheckbox,
@@ -15,7 +16,6 @@ import {
   ElDropdownItem,
   ElDropdownMenu,
 } from 'element-plus';
-import './style.less';
 
 export default defineComponent({
   name: 'DynamicTable',
@@ -29,47 +29,50 @@ export default defineComponent({
   },
   props: {
     columns: {
-      type: Array as () => DynamicTableColumn[],
+      type: Array as PropType<DynamicTableColumn[]>,
       required: true,
     },
-    data: {
-      type: Array,
+    loading: {
+      type: Boolean,
+      required: true,
+    },
+    pageImpl: {
+      type: Object as PropType<PageImpl>,
+      required: true,
+    },
+    loadData: {
+      type: Function as PropType<() => void>,
+      required: true,
     },
   },
   setup(props, { emit }) {
     const computedColumns = computed(() =>
       props.columns.filter((it) => it.show),
     );
+
+    const selected = ref<any[]>([]);
+
     const actionVNode = () => (
       <div class="t-action">
         <div class="t-left">
-          <ElButton icon={Refresh} />
+          <ElButton icon={Refresh} onClick={props.loadData} />
           <ElButton
             type="primary"
             icon={Plus}
-            onClick={() => emit('onAction', 'add')}
-          >
+            onClick={() => emit('onAction', 'add')}>
             新增
           </ElButton>
           <ElButton
             type="danger"
             icon={Delete}
-            onClick={() => emit('onAction', 'delete')}
-          >
+            disabled={!selected.value.length}
+            onClick={() => emit('onAction', 'delete')}>
             删除
           </ElButton>
-          <ElButton
-            type="primary"
-            icon={Top}
-            onClick={() => emit('onAction', 'import')}
-          >
+          <ElButton icon={Top} onClick={() => emit('onAction', 'import')}>
             导入
           </ElButton>
-          <ElButton
-            type="primary"
-            icon={Bottom}
-            onClick={() => emit('onAction', 'export')}
-          >
+          <ElButton icon={Bottom} onClick={() => emit('onAction', 'export')}>
             导出
           </ElButton>
         </div>
@@ -95,6 +98,27 @@ export default defineComponent({
         </div>
       </div>
     );
+
+    const paginationVNode = () => {
+      return (
+        <el-pagination
+          current-page={props.pageImpl.current}
+          page-size={props.pageImpl.size}
+          page-sizes={[10, 20, 50, 100]}
+          total={props.pageImpl.total}
+          background
+          layout="total, sizes, prev, pager, next, jumper"
+          onSizeChange={(size: number) => {
+            props.pageImpl.size = size;
+            props.loadData();
+          }}
+          onCurrentChange={(current: number) => {
+            props.pageImpl.current = current;
+            props.loadData();
+          }}
+        />
+      );
+    };
     return () => (
       <>
         {actionVNode()}
@@ -102,27 +126,26 @@ export default defineComponent({
           border
           stripe
           highlight-current-row
-          data={props.data}
-          table-layout="auto"
+          data={props.pageImpl.data}
+          v-loading={props.loading}
           cell-style={{ textAlign: 'center' }}
           header-cell-style={{ textAlign: 'center' }}
-        >
+          onSelectionChange={(val: []) => (selected.value = val)}>
           {{
             default: () =>
               [
                 <el-table-column type="selection" />,
                 <el-table-column type="index" />,
               ].concat(
-                computedColumns.value.map((it) => {
+                computedColumns.value.map((column) => {
                   return (
                     <el-table-column
-                      prop={it.prop}
-                      label={it.title}
-                      width={it.width}
-                    >
+                      prop={column.prop}
+                      label={column.title}
+                      width={column.width}>
                       {{
                         default: (scope: Scope) =>
-                          it.render && it.render(scope),
+                          column.render && column.render(scope),
                       }}
                     </el-table-column>
                   );
@@ -131,6 +154,7 @@ export default defineComponent({
             empty: () => <el-empty />,
           }}
         </el-table>
+        {paginationVNode()}
       </>
     );
   },

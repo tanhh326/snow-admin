@@ -68,12 +68,12 @@ function handleLogout() {
     </div>
     <div class="t-item">
       <el-dropdown trigger="click">
-        <el-avatar :size="32">盖伦</el-avatar>
+        <el-avatar :size="32">烬</el-avatar>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="handleUserInfo"
-              >个人资料</el-dropdown-item
-            >
+              >个人资料
+            </el-dropdown-item>
             <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>

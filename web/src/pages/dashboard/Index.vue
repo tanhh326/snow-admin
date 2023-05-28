@@ -1,8 +1,13 @@
 <script lang="tsx" setup>
 import { Delete, Edit } from '@element-plus/icons-vue';
 import DynamicTable from 'src/components/dynamic-table';
-import { Action, DynamicTableColumn } from 'src/components/dynamic-table/type';
+import {
+  Action,
+  DynamicTableColumn,
+  PageImpl,
+} from 'src/components/dynamic-table/type';
 import { ref } from 'vue';
+import usePage from 'src/hooks/usePage';
 
 const columns = ref<DynamicTableColumn[]>([
   {
@@ -37,28 +42,38 @@ const columns = ref<DynamicTableColumn[]>([
     show: true,
     render: (scope) =>
       scope.row.disable ? (
-        <ElTag type="info" plain>
+        <el-tag type="info" plain>
           禁用
-        </ElTag>
+        </el-tag>
       ) : (
-        <ElTag type="success" plain>
+        <el-tag type="success" plain>
           正常
-        </ElTag>
+        </el-tag>
       ),
   },
   {
     title: '操作',
     show: true,
     render: (scope) => [
-      <ElButton type="primary" icon={Edit}>
+      <el-button type="primary" icon={Edit}>
         编辑
-      </ElButton>,
-      <ElButton type="danger" icon={Delete}>
-        删除
-      </ElButton>,
+      </el-button>,
+      <el-popconfirm title="确定删除?" onConfirm={() => handlerDelete()}>
+        {{
+          reference: () => (
+            <el-button type="danger" icon={Delete}>
+              删除
+            </el-button>
+          ),
+        }}
+      </el-popconfirm>,
     ],
   },
 ]);
+
+const handlerDelete = (selected?: []) => {
+  loadData();
+};
 
 const tableData = ref([
   {
@@ -89,49 +104,56 @@ const tableData = ref([
   },
 ]);
 
-function visbleChange() {
-  console.log(columns.value);
-}
-
-const currentPage4 = ref(4);
-const pageSize4 = ref(100);
-const disabled = ref(false);
-
-const handleSizeChange = (val: number) => {
-  console.log(`${val} items per page`);
-};
-const handleCurrentChange = (val: number) => {
-  console.log(`current page: ${val}`);
-};
-
 const handlerAction = (action: Action) => {
   console.log('action', action);
 };
+
+const queryFormStyle = {
+  backgroundColor: '#ffffff',
+  padding: '20px 20px 0',
+};
+
+const queryForm = ref({
+  name: '',
+  phone: '',
+});
+const fetchData = (page: PageImpl) => {
+  return new Promise<PageImpl>((resolve) => {
+    console.log('此处自己转成想要的query参数', page, queryForm.value);
+    setTimeout(() => {
+      resolve({ size: 10, total: 100, current: 1, data: tableData.value });
+    }, 1500);
+  });
+};
+
+const { pageImpl, loading, loadData } = usePage(fetchData);
 </script>
 
 <template>
+  <el-form :inline="true" :style="queryFormStyle">
+    <el-row>
+      <el-form-item label="姓名">
+        <el-input v-model="queryForm.name" />
+      </el-form-item>
+      <el-form-item label="手机号">
+        <el-input v-model="queryForm.phone" />
+      </el-form-item>
+      <el-form-item label="手机号">
+        <el-input />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="loadData">搜索</el-button>
+        <el-button @click="">重置</el-button>
+      </el-form-item>
+    </el-row>
+  </el-form>
   <DynamicTable
     :columns="columns"
-    :data="tableData"
+    :load-data="loadData"
+    :loading="loading"
+    :page-impl="pageImpl"
     @on-action="handlerAction"
-  />
-  <el-pagination
-    v-model:current-page="currentPage4"
-    v-model:page-size="pageSize4"
-    :disabled="disabled"
-    :page-sizes="[10, 20, 50, 100]"
-    :total="400"
-    background
-    layout="total, sizes, prev, pager, next, jumper"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
   />
 </template>
 
-<style lang="less" scoped>
-.el-pagination {
-  background-color: #fff;
-  padding: 1rem 0;
-  justify-content: center;
-}
-</style>
+<style lang="less" scoped></style>

@@ -14,3 +14,10 @@ export interface Scope {
 }
 
 export type Action = 'add' | 'delete' | 'import' | 'export';
+
+export interface PageImpl {
+  current: number;
+  size: number;
+  total: number;
+  data: any[];
+}
