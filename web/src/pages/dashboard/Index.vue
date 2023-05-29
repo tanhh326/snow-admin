@@ -8,6 +8,9 @@ import {
 } from 'src/components/dynamic-table/type';
 import { ref } from 'vue';
 import usePage from 'src/hooks/usePage';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const columns = ref<DynamicTableColumn[]>([
   {
@@ -79,7 +82,7 @@ const tableData = ref([
   {
     name: 'tom',
     age: 18,
-    addr: '浙江杭州',
+    addr: t('test'),
     info: 'info',
     phone: '1310001111',
     disable: true,
@@ -130,6 +133,7 @@ const { pageImpl, loading, loadData } = usePage(fetchData);
 </script>
 
 <template>
+  <el-date-picker />
   <el-form :inline="true" :style="queryFormStyle">
     <el-row>
       <el-form-item label="姓名">
