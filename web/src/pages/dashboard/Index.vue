@@ -9,9 +9,10 @@ import {
 import { ref } from 'vue';
 import usePage from 'src/hooks/usePage';
 import { useI18n } from 'vue-i18n';
+import { baseAxios } from 'src/request';
 
 const { t } = useI18n();
-
+baseAxios.get('/ccc');
 const columns = ref<DynamicTableColumn[]>([
   {
     title: '姓名',

@@ -1,5 +1,5 @@
 import router from 'src/router/index';
-import { indexRoute, loginRoute } from 'src/router/static-router';
+import { indexRoute, loginRoute } from 'src/router/staticRouter';
 
 export function jumpToLogin(after?: () => void) {
   router.push(loginRoute.path).then(() => {

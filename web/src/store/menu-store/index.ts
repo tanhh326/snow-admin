@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { RemoveMode, SystemMenu, SystemMenuTab } from './type';
-import { indexRoute } from 'src/router/static-router';
+import { indexRoute } from 'src/router/staticRouter';
 import { findChildAndParents } from 'src/store/menu-store/util';
 
 /**

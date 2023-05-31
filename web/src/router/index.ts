@@ -1,15 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { jumpToLogin } from 'src/router/support';
-import {
-  indexRoute,
-  loginRoute,
-  notfoundRoute,
-} from 'src/router/static-router';
+import { indexRoute, loginRoute, notfoundRoute } from 'src/router/staticRouter';
 import { useMenuStore } from 'src/store';
-import {
-  dynamicRouteParentName,
-  fetchDynamicRouter,
-} from 'src/router/dynamic-router';
+import { dynamicRouteParentName, fetchDynamicRouter } from 'src/router/dynamicRouter';
 import { usePermissionsStore } from 'src/store/permissions-store';
 import Index from 'src/layout/main-layout/Index.vue';
 // 这里第一个route全部要改成动态的

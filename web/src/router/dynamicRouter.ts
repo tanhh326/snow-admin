@@ -1,7 +1,7 @@
 import { menuStoreType, useMenuStore } from 'src/store';
 import { RouteRecordRaw } from 'vue-router';
 import router from 'src/router/index';
-import { indexRoute } from 'src/router/static-router';
+import { indexRoute } from 'src/router/staticRouter';
 import { ElLoading } from 'element-plus';
 import { SystemMenu } from 'src/store/menu-store/type';
 
